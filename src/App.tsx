@@ -1,15 +1,17 @@
 import React from "react";
 
 import AppHeader from "./components/appHeader/AppHeader";
-import CharList from "./components/charList/charList";
-import Fouter from "./components/fouter/Fouter";
+import CharList from "./components/charList/CharList";
+import Footer from "./components/footer/Footer";
+import Popup from "./components/popup/Popup";
 
 function App() {
   return (
     <div>
-      <AppHeader />
+      {/* <AppHeader />
       <CharList />
-      <Fouter />
+      <Footer /> */}
+      <Popup />
     </div>
   );
 }
