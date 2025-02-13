@@ -8,10 +8,10 @@ import Popup from "./components/popup/Popup";
 function App() {
   return (
     <div>
-      {/* <AppHeader />
+      <AppHeader />
       <CharList />
-      <Footer /> */}
-      <Popup />
+      <Footer />
+      {/* <Popup /> */}
     </div>
   );
 }
