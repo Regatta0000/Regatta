@@ -1,45 +1,67 @@
 import { useState } from "react";
 import Popup from "../popup/Popup";
-
 import Loupe from "../icons/Loupe";
 import bgImage from "../../resourcess/img/bg.png";
+import { getRandomColor } from "../utils/ColorUtils";
 
 const CharList = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
-  const openPopup = () => setIsPopupOpen(true);
+  const openPopup = (character) => {
+    setSelectedCharacter(character);
+    setIsPopupOpen(true);
+  };
 
   const closePopup = () => setIsPopupOpen(false);
+
+  const atributes = [{ icon: bgImage, name: "Name", species: "Species" }];
 
   return (
     <div className="min-h-120 bg-[#333333] p-6 py-8 xl:pt-20 xl:pr-28 xl:pl-28">
       <div className="xl:mx-52">
-        <div className="flex w-full items-center justify-center gap-2 border-b-1 border-[#808080]">
+        <div className="relative flex w-full items-center gap-2 border-b-1 border-[#808080]">
           <input
+            id="searchInput"
             type="text"
-            placeholder="Search by name"
-            className="font-roboto w-full pb-2 text-base text-[#808080]"
+            placeholder=" "
+            className="font-roboto peer w-full pb-2 text-[#808080] focus:outline-none"
           />
+          <label
+            htmlFor="searchInput"
+            className="absolute top-0 left-0 text-base text-[#808080] transition-all duration-200 peer-focus:left-0 peer-focus:translate-y-[-1.5rem] peer-focus:text-sm"
+          >
+            Search by name
+          </label>
           <Loupe className="" />
-        </div>{" "}
+        </div>
       </div>
 
       <div className="mt-11 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 md:gap-x-8 xl:mt-14">
-        <div
-          className="mt-6 min-h-50 min-w-68 rounded-lg bg-[#1A1A1A] xl:min-h-80"
-          onClick={openPopup}
-        >
-          <div className="flex flex-col items-center justify-center p-8 xl:p-22">
-            <img src={bgImage} alt="Icon" />
-            <div className="font-roboto mt-2 text-[18px] font-bold text-white">
-              Name
-            </div>
-            <div className="font-roboto mt-2 text-[13px] text-[#808080]">
-              Species
+        {atributes.map((atribute, index) => (
+          <div
+            className="mt-6 min-h-50 min-w-68 rounded-lg bg-[#1A1A1A] xl:min-h-80"
+            key={index}
+            onClick={() => openPopup(atribute)}
+          >
+            <div className="flex flex-col items-center justify-center p-8 transition hover:shadow-[0px_10px_40px_0px_rgba(37,136,167,0.38)] xl:p-22">
+              <div
+                className="flex h-20 w-20 items-center justify-center rounded-full"
+                style={{ backgroundColor: getRandomColor() }}
+              >
+                <span className="text-5xl text-white">{atribute.name[0]}</span>
+              </div>
+              <div className="font-roboto mt-2 text-[18px] font-bold text-white">
+                {atribute.name}
+              </div>
+              <div className="font-roboto mt-2 text-[13px] text-[#808080]">
+                {atribute.species}
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
+
       {isPopupOpen && (
         <div
           className="fixed inset-0 z-10 bg-black opacity-50"
@@ -47,7 +69,9 @@ const CharList = () => {
         ></div>
       )}
 
-      {isPopupOpen && <Popup onClose={closePopup} />}
+      {isPopupOpen && selectedCharacter && (
+        <Popup character={selectedCharacter} onClose={closePopup} />
+      )}
     </div>
   );
 };

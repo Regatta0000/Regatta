@@ -1,12 +1,13 @@
-import bgImage from "../../resourcess/img/bg.png";
 import closeImage from "../../resourcess/img/Close_btn.svg";
 import DOBImage from "../../resourcess/img/DOB.svg";
 import speciesImage from "../../resourcess/img/Species.svg";
 import genderImage from "../../resourcess/img/Gender.svg";
 import homeWorldImage from "../../resourcess/img/Home_world.svg";
 import filmsImage from "../../resourcess/img/Films.svg";
+import { FC } from "react";
+import { getRandomColor } from "../utils/ColorUtils";
 
-const Popup = ({ onClose }) => {
+const Popup: FC<{ onClose: () => void }> = ({ character, onClose }) => {
   const atributes = [
     { icon: DOBImage, title: "Birth year", value: "Birth year" },
     { icon: speciesImage, title: "Species", value: "Species" },
@@ -23,10 +24,6 @@ const Popup = ({ onClose }) => {
     },
   ];
 
-  const handlePopupClick = (e) => {
-    e.stopPropagation();
-  };
-
   return (
     <div
       className="fixed inset-0 z-20 flex items-center justify-center"
@@ -34,7 +31,7 @@ const Popup = ({ onClose }) => {
     >
       <div
         className="relative h-full w-full bg-[#1A1A1A] pr-6 pl-6 md:max-h-123 md:max-w-200 md:rounded-lg md:pr-20 md:pl-20"
-        onClick={handlePopupClick}
+        onClick={(e) => e.stopPropagation()}
       >
         <img
           className="absolute top-4 right-4 cursor-pointer"
@@ -43,8 +40,15 @@ const Popup = ({ onClose }) => {
           onClick={onClose}
         />
         <div className="flex items-center pt-12 pb-12 md:pt-20 md:pb-20">
-          <img src={bgImage} alt="Icon" />
-          <div className="font-roboto pl-4 text-[22px] text-[#fff]">Name</div>
+          <div
+            className="flex h-20 w-20 items-center justify-center rounded-full"
+            style={{ backgroundColor: getRandomColor() }}
+          >
+            <span className="text-5xl text-white">{character.name[0]}</span>
+          </div>
+          <div className="font-roboto pl-4 text-[22px] text-[#fff]">
+            {character.name}
+          </div>
         </div>
         <div className="mb-8 border-b-1 border-[#808080] md:mb-15"></div>
 
