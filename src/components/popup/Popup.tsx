@@ -7,20 +7,31 @@ import filmsImage from "../../resourcess/img/Films.svg";
 import { FC } from "react";
 import { getRandomColor } from "../utils/ColorUtils";
 
-const Popup: FC<{ onClose: () => void }> = ({ character, onClose }) => {
+const Popup: FC<{ onClose: () => void; character }> = ({
+  character,
+  onClose,
+}) => {
   const atributes = [
-    { icon: DOBImage, title: "Birth year", value: "Birth year" },
-    { icon: speciesImage, title: "Species", value: "Species" },
-    { icon: genderImage, title: "Gender", value: "Gender" },
+    { icon: DOBImage, title: "Birth year", value: character.birth_year },
+    {
+      icon: speciesImage,
+      title: "Species",
+      value: character.species || "Unknown",
+    },
+    {
+      icon: genderImage,
+      title: "Gender",
+      value: character.gender || "Unknown",
+    },
     {
       icon: homeWorldImage,
       title: "Homeworld",
-      value: "Homeworld",
+      value: character.homeworld || "Unknown",
     },
     {
       icon: filmsImage,
       title: "Films",
-      value: "Films",
+      value: character.films.join(", ") || "Unknown",
     },
   ];
 
