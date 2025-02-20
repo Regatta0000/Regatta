@@ -15,13 +15,26 @@ const CharList = () => {
   };
 
   const closePopup = () => setIsPopupOpen(false);
+
   const fetchCharacters = async () => {
     try {
       const response = await fetch("https://swapi.dev/api/people/");
       const data = await response.json();
-      setCharacters(data.results);
+      const charactersWithSpecies = await Promise.all(
+        data.results.map(async (character) => {
+          const speciesNames = await Promise.all(
+            character.species.map(async (speciesUrl) => {
+              const speciesResponse = await fetch(speciesUrl);
+              const speciesData = await speciesResponse.json();
+              return speciesData.name;
+            }),
+          );
+          return { ...character, species: speciesNames.join(", ") };
+        }),
+      );
+      setCharacters(charactersWithSpecies);
     } catch (error) {
-      console.log("Error");
+      console.log("Error", error);
     }
   };
 
@@ -32,8 +45,6 @@ const CharList = () => {
   const filteredCharacters = characters.filter((characters) =>
     characters.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-
-  // const atributes = [{ icon: bgImage, name: "Name", species: "Species" }];
 
   return (
     <div className="min-h-120 bg-[#333333] p-6 py-8 xl:pt-20 xl:pr-28 xl:pl-28">

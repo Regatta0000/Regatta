@@ -41,7 +41,7 @@ const Popup: FC<{ onClose: () => void; character }> = ({
       onClick={onClose}
     >
       <div
-        className="relative h-full w-full bg-[#1A1A1A] pr-6 pl-6 md:max-h-123 md:max-w-200 md:rounded-lg md:pr-20 md:pl-20"
+        className="relative h-full w-full overflow-y-auto bg-[#1A1A1A] pr-6 pl-6 md:max-h-123 md:max-w-200 md:rounded-lg md:pr-20 md:pl-20"
         onClick={(e) => e.stopPropagation()}
       >
         <img
