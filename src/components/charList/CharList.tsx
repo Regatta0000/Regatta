@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import Popup from "../popup/Popup";
 import Loupe from "../icons/Loupe";
-import { getRandomColor } from "../utils/ColorUtils";
+
+import useCharactersStore from "../Store";
 
 const CharList = () => {
+  const { characters, fetchCharacters } = useCharactersStore();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState(null);
-  const [characters, setCharacters] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const openPopup = (character) => {
@@ -16,31 +17,9 @@ const CharList = () => {
 
   const closePopup = () => setIsPopupOpen(false);
 
-  const fetchCharacters = async () => {
-    try {
-      const response = await fetch("https://swapi.dev/api/people/");
-      const data = await response.json();
-      const charactersWithSpecies = await Promise.all(
-        data.results.map(async (character) => {
-          const speciesNames = await Promise.all(
-            character.species.map(async (speciesUrl) => {
-              const speciesResponse = await fetch(speciesUrl);
-              const speciesData = await speciesResponse.json();
-              return speciesData.name;
-            }),
-          );
-          return { ...character, species: speciesNames.join(", ") };
-        }),
-      );
-      setCharacters(charactersWithSpecies);
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
-
   useEffect(() => {
     fetchCharacters();
-  }, []);
+  }, [fetchCharacters]);
 
   const filteredCharacters = characters.filter((characters) =>
     characters.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -78,7 +57,7 @@ const CharList = () => {
             <div className="flex flex-col items-center justify-center p-8 transition hover:shadow-[0px_10px_40px_0px_rgba(37,136,167,0.38)] xl:p-22">
               <div
                 className="flex h-20 w-20 items-center justify-center rounded-full"
-                style={{ backgroundColor: getRandomColor() }}
+                style={{ backgroundColor: character.backgroundColor }}
               >
                 <span className="text-5xl text-white">{character.name[0]}</span>
               </div>

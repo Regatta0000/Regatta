@@ -53,7 +53,7 @@ const Popup: FC<{ onClose: () => void; character }> = ({
         <div className="flex items-center pt-12 pb-12 md:pt-20 md:pb-20">
           <div
             className="flex h-20 w-20 items-center justify-center rounded-full"
-            style={{ backgroundColor: getRandomColor() }}
+            style={{ backgroundColor: character.backgroundColor }}
           >
             <span className="text-5xl text-white">{character.name[0]}</span>
           </div>
